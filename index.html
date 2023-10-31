@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hunter Χιονοκουβέρτες</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+        }
+        h1 {
+            color: #ffd500;
+        }
+        form {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            margin: 0 auto; /* Center the form horizontally */
+            text-align: center;
+        }
+        input {
+            width: 80%; /* Reduce the width to fit in the grey box */
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #777;
+            border-radius: 3px;
+            background-color: #000; /* Set input background to black */
+            color: #fff; /* Set input text color to white */
+        }
+        input[type="submit"] {
+            background-color: #555;
+            color: #fff;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #777;
+        }
+        p {
+            color: #ffd500;
+        }
+        #result {
+            font-weight: bold;
+        }
+        .white-bar {
+            background-color: #333; /* Dark grey */
+            color: #fff; /* White text color */
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hunter Χιονοκουβέρτες</h1>
+    <form id="size-form">
+        <label for="num1">Πάχος Ελαστικού:</label>
+        <input type="text" id="num1" name="num1"><br><br>
+
+        <label for="num2">Ποσοστό Προφίλ:</label>
+        <input type="text" id="num2" name="num2"><br><br>
+
+        <label for="num3">Διάμετρος Ζάντας (ίντσες):</label>
+        <input type="text" id="num3" name="num3"><br><br>
+
+        <input type="submit" value="Αναζήτηση">
+    </form>
+
+    <div class="white-bar">
+        <p id="result"> Συμπληρώστε όλα τα πεδία</p>
+    </div>
+
+    <p>Τηλέφωνο: +30 210 5139449</p>
+
+    <script>
+        document.getElementById('size-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var num1 = document.getElementById('num1').value;
+            var num2 = document.getElementById('num2').value;
+            var num3 = document.getElementById('num3').value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/calculate_size', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById('result').textContent = JSON.parse(xhr.responseText).result;
+                }
+            };
+            xhr.send('num1=' + num1 + '&num2=' + num2 + '&num3=' + num3);
+        });
+
+        var inputFields = document.querySelectorAll('input');
+        inputFields.forEach(function(input, index, array) {
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowDown' || event.key === ' ') {
+                    if (index < array.length - 1) {
+                        array[index + 1].focus();
+                        event.preventDefault();
+                    }
+                } else if (event.key === 'ArrowUp') {
+                    if (index > 0) {
+                        array[index - 1].focus();
+                        event.preventDefault();
+                    }
+                } else if (event.key === 'Enter') {
+                    if (index === array.length - 1) {
+                        // Submit the form when Enter is pressed on the last input field.
+                        document.getElementById('size-form').submit();
+                    }
+                    else if (index < array.length - 2){
+                        array[index + 1].focus();
+                        event.preventDefault();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
