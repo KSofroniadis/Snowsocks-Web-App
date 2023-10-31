@@ -277,6 +277,8 @@
                 resultElement.textContent = result;
                 // Reset the form inputs
                 document.getElementById('size-form').reset();
+                // Move the cursor to the first input (num1)
+                document.getElementById('num1').focus();
             } else {
                 if (num1 === '' || num2 === '' || num3 === '') {
                     resultElement.textContent = 'Συμπληρώστε όλα τα στοιχεία';
@@ -287,8 +289,7 @@
                 }
 
             }
-            // Reset the form inputs
-            document.getElementById('size-form').reset();
+
         }
     </script>
 </body>
