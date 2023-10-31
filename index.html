@@ -30,7 +30,7 @@
             margin: 5px 0;
             border: 1px solid #777;
             border-radius: 3px;
-            background-color: #000;
+            background-color: #1c1b1b;
             color: #fff;
         }
         input[type="submit"] {
@@ -60,13 +60,13 @@
     <h1>Hunter Χιονοκουβέρτες</h1>
     <form id="size-form">
         <label for="num1">Πάχος Ελαστικού:</label>
-        <input type="text" id="num1" name="num1"><br><br>
+        <input type="text" id="num1" name="num1" onkeydown="moveToNextInput(event, 'num2')"><br><br>
 
         <label for="num2">Ποσοστό Προφίλ:</label>
-        <input type="text" id="num2" name="num2"><br><br>
+        <input type="text" id="num2" name="num2" onkeydown="moveToNextInput(event, 'num3')"><br><br>
 
         <label for="num3">Διάμετρος Ζάντας (ίντσες):</label>
-        <input type="text" id="num3" name="num3"><br><br>
+        <input type="text" id="num3" name="num3" onkeydown="calculateOnEnter(event)"><br><br>
 
         <input type="button" value="Αναζήτηση" onclick="calculateSize()">
     </form>
@@ -78,6 +78,21 @@
     <p>Τηλέφωνο: +30 210 5139449</p>
 
     <script>
+
+        // Function to navigate to the next input on Enter
+        function calculateOnEnter(event) {
+            if (event.key === "Enter") {
+                calculateSize();
+            }
+        }
+
+        // Function to move to the next input on arrow keys
+        function moveToNextInput(event, nextInputId) {
+            if (event.key === "ArrowDown" || event.key === "Enter") {
+                document.getElementById(nextInputId).focus();
+                event.preventDefault(); // Prevent the default behavior of arrow keys and Enter
+            }
+        }
         // Function to calculate size and update the result
         function calculateSize() {
             var num1 = document.getElementById('num1').value;
@@ -260,9 +275,20 @@
             var resultElement = document.getElementById('result');
             if (result !== null) {
                 resultElement.textContent = result;
+                // Reset the form inputs
+                document.getElementById('size-form').reset();
             } else {
+                if (num1 === '' || num2 === '' || num3 === '') {
+                    resultElement.textContent = 'Συμπληρώστε όλα τα στοιχεία';
+                    return;
+                }
+                else {
                 resultElement.textContent = 'Άγνωστο μέγεθος';
+                }
+
             }
+            // Reset the form inputs
+            document.getElementById('size-form').reset();
         }
     </script>
 </body>
